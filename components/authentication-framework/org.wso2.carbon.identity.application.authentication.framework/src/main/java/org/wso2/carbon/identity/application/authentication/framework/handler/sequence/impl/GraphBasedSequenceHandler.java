@@ -115,7 +115,6 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
             throw new FrameworkException(
                     "Error while building graph from Javascript. Nested exception is: " + graph.getErrorReason());
         }
-
         boolean isInterrupted = false;
         while (!isInterrupted && !context.getSequenceConfig().isCompleted()) {
 
@@ -362,6 +361,12 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
             throws FrameworkException {
 
         StepConfig stepConfig = stepConfigGraphNode.getStepConfig();
+        StepConfig stepConfigCloned = null;
+        try {
+            stepConfigCloned = (StepConfig) stepConfig.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         if (stepConfig == null) {
             throw new FrameworkException("StepConfig not found while handling the step. Service Provider : " + context
                     .getServiceProviderName());
@@ -369,6 +374,8 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
 
         // if the current step is completed
         if (stepConfig.isCompleted()) {
+            //stepConfigCloned.setCompleted(false);
+            //stepConfigCloned.setRetrying(false);
             stepConfig.setCompleted(false);
             stepConfig.setRetrying(false);
 
@@ -385,6 +392,7 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
                 // authentication
                 if (stepConfig.isMultiOption() && !context.isPassiveAuthenticate()) {
                     stepConfig.setRetrying(true);
+                    //stepConfigCloned.setRetrying(true);
                     context.setRequestAuthenticated(true);
                 } else {
                     resetAuthenticationContext(context);
@@ -408,6 +416,7 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
             }
             context.setCurrentStep(stepNumber);
             context.getSequenceConfig().getStepMap().put(stepNumber, stepConfig);
+            //context.getSequenceConfig().getStepMap().put(stepNumber, stepConfigCloned);
         }
 
         FrameworkUtils.getStepHandler().handle(request, response, context);
@@ -418,6 +427,8 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
         if (flowStatus != SUCCESS_COMPLETED && flowStatus != INCOMPLETE) {
             stepConfig.setSubjectAttributeStep(false);
             stepConfig.setSubjectIdentifierStep(false);
+            //stepConfigCloned.setSubjectAttributeStep(false);
+            //stepConfigCloned.setSubjectIdentifierStep(false);
         }
 
         if (flowStatus == FAIL_COMPLETED) {
