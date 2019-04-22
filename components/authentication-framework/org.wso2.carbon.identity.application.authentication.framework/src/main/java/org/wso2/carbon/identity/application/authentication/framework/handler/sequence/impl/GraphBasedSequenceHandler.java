@@ -423,7 +423,7 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
         if (flowStatus == FAIL_COMPLETED) {
             if (!(stepConfigGraphNode.getNext() instanceof DynamicDecisionNode)) {
                 if (context.isRetrying()) {
-                    StepConfigGraphNode newNextNode = new StepConfigGraphNode(stepConfigGraphNode.getStepConfig());
+                    StepConfigGraphNode newNextNode = new StepConfigGraphNode(stepConfigGraphNode.getStepConfigUnCloned());
                     newNextNode.setNext(stepConfigGraphNode.getNext());
                     AuthGraphNode parentNode = stepConfigGraphNode.getParent();
                     if (parentNode == null) {

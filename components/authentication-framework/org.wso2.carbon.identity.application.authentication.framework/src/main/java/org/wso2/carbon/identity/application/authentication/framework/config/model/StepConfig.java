@@ -28,7 +28,7 @@ import java.util.List;
  * Holds the login page and the authenticator objects
  * of a particular factor
  */
-public class StepConfig implements Serializable {
+public class StepConfig implements Serializable,Cloneable {
 
     private static final long serialVersionUID = 7271079506748466841L;
 
@@ -198,5 +198,11 @@ public class StepConfig implements Serializable {
 
     public void setRetrying(boolean retrying) {
         this.retrying = retrying;
+    }
+
+    public Object clone() throws
+            CloneNotSupportedException
+    {
+        return super.clone();
     }
 }

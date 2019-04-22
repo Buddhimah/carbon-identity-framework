@@ -29,6 +29,7 @@ public class StepConfigGraphNode extends AbstractAuthGraphNode implements AuthGr
     private static final long serialVersionUID = -5648175409277330725L;
     private AuthGraphNode nextLink;
     private StepConfig stepConfig;
+    private StepConfig stepConfigCloned;
 
     public StepConfigGraphNode(StepConfig stepConfig) {
         this.stepConfig = stepConfig;
@@ -36,6 +37,15 @@ public class StepConfigGraphNode extends AbstractAuthGraphNode implements AuthGr
 
     public StepConfig getStepConfig() {
 
+        try {
+            return (StepConfig) stepConfig.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public StepConfig getStepConfigUnCloned(){
         return stepConfig;
     }
 
