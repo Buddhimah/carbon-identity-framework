@@ -373,11 +373,11 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
         }
 
         // if the current step is completed
-        if (stepConfig.isCompleted()) {
-            //stepConfigCloned.setCompleted(false);
-            //stepConfigCloned.setRetrying(false);
-            stepConfig.setCompleted(false);
-            stepConfig.setRetrying(false);
+        if (stepConfigCloned.isCompleted()) {
+            stepConfigCloned.setCompleted(false);
+            stepConfigCloned.setRetrying(false);
+            //stepConfig.setCompleted(false);
+            //stepConfig.setRetrying(false);
 
             // if the request didn't fail during the step execution
             if (context.isRequestAuthenticated()) {
@@ -390,9 +390,9 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
                 }
                 // if the step contains multiple login options, we should give the user to retry
                 // authentication
-                if (stepConfig.isMultiOption() && !context.isPassiveAuthenticate()) {
-                    stepConfig.setRetrying(true);
-                    //stepConfigCloned.setRetrying(true);
+                if (stepConfigCloned.isMultiOption() && !context.isPassiveAuthenticate()) {
+                    //stepConfig.setRetrying(true);
+                    stepConfigCloned.setRetrying(true);
                     context.setRequestAuthenticated(true);
                 } else {
                     resetAuthenticationContext(context);
@@ -415,8 +415,8 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
                 stepNumber++;
             }
             context.setCurrentStep(stepNumber);
-            context.getSequenceConfig().getStepMap().put(stepNumber, stepConfig);
-            //context.getSequenceConfig().getStepMap().put(stepNumber, stepConfigCloned);
+            //context.getSequenceConfig().getStepMap().put(stepNumber, stepConfig);
+            context.getSequenceConfig().getStepMap().put(stepNumber, stepConfigCloned);
         }
 
         FrameworkUtils.getStepHandler().handle(request, response, context);
@@ -425,10 +425,10 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
                 .getAttribute(FrameworkConstants.RequestParams.FLOW_STATUS);
 
         if (flowStatus != SUCCESS_COMPLETED && flowStatus != INCOMPLETE) {
-            stepConfig.setSubjectAttributeStep(false);
-            stepConfig.setSubjectIdentifierStep(false);
-            //stepConfigCloned.setSubjectAttributeStep(false);
-            //stepConfigCloned.setSubjectIdentifierStep(false);
+            //stepConfig.setSubjectAttributeStep(false);
+            //stepConfig.setSubjectIdentifierStep(false);
+            stepConfigCloned.setSubjectAttributeStep(false);
+            stepConfigCloned.setSubjectIdentifierStep(false);
         }
 
         if (flowStatus == FAIL_COMPLETED) {
@@ -452,7 +452,7 @@ public class GraphBasedSequenceHandler extends DefaultStepBasedSequenceHandler i
             }
         }
         // if step is not completed, that means step wants to redirect to outside
-        if (!stepConfig.isCompleted()) {
+        if (!stepConfigCloned.isCompleted()) {
             if (log.isDebugEnabled()) {
                 log.debug("Step is not complete yet. Redirecting to outside.");
             }
