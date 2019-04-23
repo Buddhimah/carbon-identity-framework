@@ -551,6 +551,7 @@ public class DefaultStepHandler implements StepHandler {
 
             // store authenticated idp
             stepConfig.setAuthenticatedIdP(idpName);
+            context.getSequenceConfig().getAuthenticationGraph().getStepMap().get(currentStep).setAuthenticatedIdP(idpName);
             authenticatedIdPData.setIdpName(idpName);
             authenticatedIdPData.addAuthenticator(authenticatorConfig);
             //add authenticated idp data to the session wise map

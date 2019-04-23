@@ -21,13 +21,17 @@ package org.wso2.carbon.identity.application.authentication.framework.handler.se
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.wso2.carbon.identity.application.authentication.framework.config.model.SequenceConfig;
+import org.wso2.carbon.identity.application.authentication.framework.config.model.StepConfig;
+import org.wso2.carbon.identity.application.authentication.framework.config.model.graph.AuthenticationGraph;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthHistory;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.user.core.util.UserCoreUtil;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,6 +52,13 @@ public class GraphBasedSequenceHandlerNoJsTest extends GraphBasedSequenceHandler
         SequenceConfig sequenceConfig = configurationLoader
                 .getSequenceConfig(context, Collections.<String, String[]>emptyMap(), sp1);
         context.setSequenceConfig(sequenceConfig);
+        AuthenticationGraph authenticationGraph = new AuthenticationGraph();
+        Map<Integer, StepConfig> stepMap = new HashMap<>();
+        stepMap.put(1,new StepConfig());
+        stepMap.put(2,new StepConfig());
+        stepMap.put(3,new StepConfig());
+        authenticationGraph.setStepMap(stepMap);
+        sequenceConfig.setAuthenticationGraph(authenticationGraph);
 
         HttpServletRequest req = mock(HttpServletRequest.class);
 
