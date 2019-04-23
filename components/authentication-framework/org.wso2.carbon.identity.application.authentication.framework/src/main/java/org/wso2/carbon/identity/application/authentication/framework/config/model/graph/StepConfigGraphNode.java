@@ -34,7 +34,6 @@ public class StepConfigGraphNode extends AbstractAuthGraphNode implements AuthGr
     public StepConfigGraphNode(StepConfig stepConfig) {
         this.stepConfig = stepConfig;
         try {
-            System.out.println("Cloned");
             this.stepConfigCloned = (StepConfig) stepConfig.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -42,7 +41,6 @@ public class StepConfigGraphNode extends AbstractAuthGraphNode implements AuthGr
     }
 
     public StepConfig getStepConfig() {
-        System.out.println("Cloned");
         return stepConfigCloned;
     }
 
