@@ -842,6 +842,9 @@ public class FileBasedConfigurationBuilder {
             if (paramNameAttr.getAttributeValue().equals("username")){
                 processUserNameParameterElement(paramElem, parameterMap);
             }
+            if (paramNameAttr.getAttributeValue().equals("alternativeNames")){
+                processAlternativeNamesParameterElement(paramElem, parameterMap);
+            }
 
             parameterMap.put(paramNameAttr.getAttributeValue(), paramElem.getText());
         }
@@ -852,21 +855,44 @@ public class FileBasedConfigurationBuilder {
         return authenticatorConfig;
     }
 
+    private void processAlternativeNamesParameterElement(OMElement paramElement, Map<String, String> parameterMap) {
+
+        Iterator paramIterator;
+        OMElement paramElem;
+        paramIterator = paramElement.getChildrenWithLocalName(FrameworkConstants.Config.ALTN_KEY_NAME);
+        if (paramIterator.hasNext()) {
+            paramElem = (OMElement) paramIterator.next();
+            if (paramElem != null) {
+                parameterMap.put(FrameworkConstants.Config.ALTN_KEY_NAME, paramElem.getText());
+
+            }
+        }
+        paramIterator = paramElement.getChildrenWithLocalName(FrameworkConstants.Config.AlTN_PATTERN_PARAMETER_NAME);
+        if (paramIterator.hasNext()) {
+            paramElem = (OMElement) paramIterator.next();
+            if (paramElem != null) {
+                parameterMap.put(FrameworkConstants.Config.AlTN_PATTERN_PARAMETER_NAME, paramElem.getText());
+
+            }
+        }
+    }
+
     private void processUserNameParameterElement(OMElement paramElement, Map<String, String> parameterMap) {
-        for (Iterator paramIterator =
-             paramElement.getChildrenWithLocalName(FrameworkConstants.Config.CERT_ATTR_PARAMETER_NAME);
-        paramIterator.hasNext(); ) {
-            OMElement paramElem = (OMElement) paramIterator.next();
-            if (paramElem != null){
+
+        Iterator paramIterator;
+        OMElement paramElem;
+        paramIterator = paramElement.getChildrenWithLocalName(FrameworkConstants.Config.CERT_ATTR_PARAMETER_NAME);
+        if (paramIterator.hasNext()) {
+            paramElem = (OMElement) paramIterator.next();
+            if (paramElem != null) {
                 parameterMap.put(FrameworkConstants.Config.CERT_ATTR_PARAMETER_NAME, paramElem.getText());
 
             }
         }
-        for (Iterator paramIterator =
-             paramElement.getChildrenWithLocalName(FrameworkConstants.Config.CERT_PATTERN_PARAMETER_NAME);
-             paramIterator.hasNext(); ) {
-            OMElement paramElem = (OMElement) paramIterator.next();
-            if (paramElem != null){
+        paramIterator = paramElement.getChildrenWithLocalName(FrameworkConstants.Config.CERT_PATTERN_PARAMETER_NAME);
+        if (paramIterator.hasNext()) {
+            paramElem = (OMElement) paramIterator.next();
+            if (paramElem != null) {
                 parameterMap.put(FrameworkConstants.Config.CERT_PATTERN_PARAMETER_NAME, paramElem.getText());
 
             }
