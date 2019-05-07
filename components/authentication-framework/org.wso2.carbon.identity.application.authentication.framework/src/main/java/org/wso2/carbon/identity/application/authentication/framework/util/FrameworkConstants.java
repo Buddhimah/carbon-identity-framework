@@ -159,6 +159,8 @@ public abstract class FrameworkConstants {
         public static final String ATTR_AUTHENTICATOR_IDPS = "idpList";
         public static final String ATTR_AUTHENTICATOR_ENABLED = "enabled";
         public static final String ATTR_PARAMETER_NAME = "name";
+        public static final String CERT_ATTR_PARAMETER_NAME = "CertificateAttribute";
+        public static final String CERT_PATTERN_PARAMETER_NAME = "Pattern";
         public static final String ATTR_STEP_LOGIN_PAGE = "loginPage";
         public static final String ATTR_STEP_ORDER = "order";
         public static final String ATTR_APPLICATION_NAME = "name";

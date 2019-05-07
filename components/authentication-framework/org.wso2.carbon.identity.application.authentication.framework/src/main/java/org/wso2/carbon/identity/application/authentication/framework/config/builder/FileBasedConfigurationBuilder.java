@@ -839,6 +839,14 @@ public class FileBasedConfigurationBuilder {
                 log.warn("An Authenticator Parameter should have a name attribute. Skipping the parameter.");
                 continue;
             }
+            if (paramNameAttr.getAttributeValue().equals("username")){
+                processUserNameParameterElement(paramElem, parameterMap);
+                if (parameterMap.get(paramNameAttr.getAttributeValue())== null){
+                    parameterMap.put(paramNameAttr.getAttributeValue(), paramElem.getText());
+                } else{
+                    continue;
+                }
+            }
 
             parameterMap.put(paramNameAttr.getAttributeValue(), paramElem.getText());
         }
@@ -847,6 +855,28 @@ public class FileBasedConfigurationBuilder {
         authenticatorConfig.setApplicationAuthenticator(FrameworkUtils.getAppAuthenticatorByName(authenticatorName));
 
         return authenticatorConfig;
+    }
+
+    private void processUserNameParameterElement(OMElement paramElement, Map<String, String> parameterMap) {
+        for (Iterator paramIterator =
+             paramElement.getChildrenWithLocalName(FrameworkConstants.Config.CERT_ATTR_PARAMETER_NAME);
+        paramIterator.hasNext(); ) {
+            OMElement paramElem = (OMElement) paramIterator.next();
+            if (paramElem != null){
+                parameterMap.put(FrameworkConstants.Config.CERT_ATTR_PARAMETER_NAME, paramElem.getText());
+
+            }
+        }
+        for (Iterator paramIterator =
+             paramElement.getChildrenWithLocalName(FrameworkConstants.Config.CERT_PATTERN_PARAMETER_NAME);
+             paramIterator.hasNext(); ) {
+            OMElement paramElem = (OMElement) paramIterator.next();
+            if (paramElem != null){
+                parameterMap.put(FrameworkConstants.Config.CERT_PATTERN_PARAMETER_NAME, paramElem.getText());
+
+            }
+        }
+
     }
 
     private ExternalIdPConfig processIdPConfigElement(OMElement idpConfigElem) {
