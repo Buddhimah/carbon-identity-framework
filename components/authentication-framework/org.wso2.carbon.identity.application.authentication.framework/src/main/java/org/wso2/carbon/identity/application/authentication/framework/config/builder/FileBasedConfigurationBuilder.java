@@ -841,11 +841,6 @@ public class FileBasedConfigurationBuilder {
             }
             if (paramNameAttr.getAttributeValue().equals("username")){
                 processUserNameParameterElement(paramElem, parameterMap);
-                if (parameterMap.get(paramNameAttr.getAttributeValue())== null){
-                    parameterMap.put(paramNameAttr.getAttributeValue(), paramElem.getText());
-                } else{
-                    continue;
-                }
             }
 
             parameterMap.put(paramNameAttr.getAttributeValue(), paramElem.getText());
