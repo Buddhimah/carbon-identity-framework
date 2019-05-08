@@ -867,11 +867,11 @@ public class FileBasedConfigurationBuilder {
 
             }
         }
-        paramIterator = paramElement.getChildrenWithLocalName(FrameworkConstants.Config.AlTN_PATTERN_PARAMETER_NAME);
+        paramIterator = paramElement.getChildrenWithLocalName(FrameworkConstants.Config.PATTERN_PARAMETER_NAME);
         if (paramIterator.hasNext()) {
             paramElem = (OMElement) paramIterator.next();
             if (paramElem != null) {
-                parameterMap.put(FrameworkConstants.Config.AlTN_PATTERN_PARAMETER_NAME, paramElem.getText());
+                parameterMap.put(FrameworkConstants.Config.AlTN_PATTERN, paramElem.getText());
 
             }
         }
@@ -889,11 +889,11 @@ public class FileBasedConfigurationBuilder {
 
             }
         }
-        paramIterator = paramElement.getChildrenWithLocalName(FrameworkConstants.Config.CERT_PATTERN_PARAMETER_NAME);
+        paramIterator = paramElement.getChildrenWithLocalName(FrameworkConstants.Config.PATTERN_PARAMETER_NAME);
         if (paramIterator.hasNext()) {
             paramElem = (OMElement) paramIterator.next();
             if (paramElem != null) {
-                parameterMap.put(FrameworkConstants.Config.CERT_PATTERN_PARAMETER_NAME, paramElem.getText());
+                parameterMap.put(FrameworkConstants.Config.SUBJECT_PATTERN, paramElem.getText());
 
             }
         }
