@@ -106,7 +106,7 @@ public class SQLConstants {
             " ?";
     public static final String UPDATE_ATTRIBUTE_MYSQL = "UPDATE IDN_CONFIG_ATTRIBUTE SET ATTR_VALUE = ? WHERE ID = ?";
     public static final String INSERT_ATTRIBUTE_MYSQL = "INSERT INTO IDN_CONFIG_ATTRIBUTE(ID, RESOURCE_ID, ATTR_KEY, " +
-            "ATTR_VALUE) VALUES(?, ?, ?, ?)";
+            "ATTR_VALUE, ATTR_TYPE) VALUES(?, ?, ?, ?, ?)";
     public static final String INSERT_OR_UPDATE_ATTRIBUTE_MYSQL = "INSERT IDN_CONFIG_ATTRIBUTE(ID, RESOURCE_ID, " +
             "ATTR_KEY, ATTR_VALUE) VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE RESOURCE_ID = VALUES(RESOURCE_ID), " +
             "ATTR_KEY = VALUES(ATTR_KEY), ATTR_VALUE = VALUES(ATTR_VALUE)";
@@ -117,6 +117,7 @@ public class SQLConstants {
             "  RESOURCE_ID,\n" +
             "  ATTR_KEY,\n" +
             "  ATTR_VALUE\n" +
+            "  ATTR_TYPE\n" +
             "FROM\n" +
             "  IDN_CONFIG_ATTRIBUTE\n" +
             "WHERE\n" +

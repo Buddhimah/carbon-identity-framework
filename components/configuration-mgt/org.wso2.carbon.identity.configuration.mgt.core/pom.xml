@@ -130,6 +130,8 @@
                             org.wso2.carbon.database.utils.jdbc; version="${org.wso2.carbon.database.utils.version.range}",
                             org.wso2.carbon.database.utils.jdbc.exceptions; version="${org.wso2.carbon.database.utils.version.range}",
                             org.wso2.carbon.identity.application.authentication.framework.util; version="${carbon.identity.package.import.version.range}",
+                            org.wso2.carbon.core.util; version="${carbon.kernel.package.import.version.range}",
+                            org.apache.commons.io; version="${commons.io.wso2.osgi.version.range}",
                         </Import-Package>
                         <Export-Package>
                             !org.wso2.carbon.identity.configuration.mgt.core.internal,

@@ -577,6 +577,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO {
                     preparedStatement.setString(++initialParameterIndex, resourceId);
                     preparedStatement.setString(++initialParameterIndex, attribute.getKey());
                     preparedStatement.setString(++initialParameterIndex, attribute.getValue());
+                    preparedStatement.setString(++initialParameterIndex, attribute.getDataType());
 
                 });
                 template.executeUpdate(SQLConstants.UPDATE_LAST_MODIFIED_SQL, preparedStatement -> {

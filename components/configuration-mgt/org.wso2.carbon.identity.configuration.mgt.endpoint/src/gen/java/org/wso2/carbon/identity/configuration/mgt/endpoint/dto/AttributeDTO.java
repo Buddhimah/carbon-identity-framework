@@ -32,6 +32,8 @@ public class AttributeDTO {
     @NotNull
     private String value = null;
 
+    private String datatype = null;
+
     /**
      *
      **/
@@ -70,7 +72,16 @@ public class AttributeDTO {
 
         sb.append("  key: ").append(key).append("\n");
         sb.append("  value: ").append(value).append("\n");
+        sb.append("  datatype:  ").append(datatype).append("\n");
         sb.append("}\n");
         return sb.toString();
+    }
+
+    public String getDatatype() {
+        return datatype;
+    }
+
+    public void setDatatype(String datatype) {
+        this.datatype = datatype;
     }
 }

@@ -24,7 +24,7 @@ public class Attribute {
 
     private String key;
     private String value;
-    private String type;
+    private String dataType;
     private String attributeId;
 
     /**
@@ -45,15 +45,6 @@ public class Attribute {
         this.value = value;
         this.attributeId = attributeId;
     }
-
-    public Attribute(String key, String value, String attributeId, String type) {
-
-        this.key = key;
-        this.value = value;
-        this.value = value;
-        this.attributeId = attributeId;
-    }
-
     public Attribute() {
 
     }
@@ -88,11 +79,11 @@ public class Attribute {
         this.value = value;
     }
 
-    public String getType() {
-        return type;
+    public String getDataType() {
+        return dataType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
     }
 }

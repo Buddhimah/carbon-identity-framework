@@ -102,6 +102,7 @@ public class ConfigurationConstants {
         ERROR_CODE_REPLACE_RESOURCE("CONFIGM_00034", "Error while replacing the resource : %s."),
         ERROR_CODE_REPLACE_ATTRIBUTE("CONFIGM_00035", "Error while replacing the attribute: %s."),
         ERROR_CODE_FEATURE_NOT_ENABLED("CONFIGM_00036", "Configuration management feature is not enabled."),
+        ERROR_CODE_ENCRYPTION_FAILED("CONFIGM_00037", "Error occurred when encrypting the resource."),
         ;
 
         private final String code;
@@ -127,6 +128,22 @@ public class ConfigurationConstants {
         public String toString() {
 
             return code + ":" + message;
+        }
+    }
+
+    public enum AttributeTypes {
+        TEXT("Text"),
+        ENCRYPTED_TEXT("EncryptedText"),
+        ;
+        private final String type;
+
+        AttributeTypes(String type){
+            this.type = type;
+
+        }
+
+        public String getType() {
+            return type;
         }
     }
 }

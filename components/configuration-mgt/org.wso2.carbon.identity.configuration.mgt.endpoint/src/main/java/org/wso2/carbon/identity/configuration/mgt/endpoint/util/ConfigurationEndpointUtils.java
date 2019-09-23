@@ -156,7 +156,13 @@ public class ConfigurationEndpointUtils {
 
     public static Attribute getAttributeFromDTO(AttributeDTO attributeDTO) {
 
-        return new Attribute(attributeDTO.getKey(), attributeDTO.getValue());
+        Attribute attribute = new Attribute(attributeDTO.getKey(), attributeDTO.getValue());
+        if (attributeDTO.getDatatype() != null) {
+            attribute.setDataType(attributeDTO.getDatatype());
+        } else {
+            attribute.setDataType(ConfigurationConstants.AttributeTypes.TEXT.getType());
+        }
+        return attribute;
     }
 
     public static AttributeDTO getAttributeDTO(Attribute attribute) {
@@ -164,6 +170,7 @@ public class ConfigurationEndpointUtils {
         AttributeDTO attributeDTO = new AttributeDTO();
         attributeDTO.setKey(attribute.getKey());
         attributeDTO.setValue(attribute.getValue());
+        attributeDTO.setDatatype(attribute.getDataType());
         return attributeDTO;
     }
 
