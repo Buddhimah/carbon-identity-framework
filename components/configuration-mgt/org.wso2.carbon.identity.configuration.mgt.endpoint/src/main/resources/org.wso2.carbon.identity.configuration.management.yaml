@@ -743,6 +743,9 @@ definitions:
         type: string
       value:
         type: string
+      datatype:
+        type :string
+
   #-----------------------------------------------------
   # Resource File Object
   #-----------------------------------------------------

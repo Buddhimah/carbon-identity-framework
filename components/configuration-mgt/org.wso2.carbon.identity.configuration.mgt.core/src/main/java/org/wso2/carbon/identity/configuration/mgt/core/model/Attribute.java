@@ -24,6 +24,7 @@ public class Attribute {
 
     private String key;
     private String value;
+    private String type;
     private String attributeId;
 
     /**
@@ -41,6 +42,14 @@ public class Attribute {
     public Attribute(String key, String value, String attributeId) {
 
         this.key = key;
+        this.value = value;
+        this.attributeId = attributeId;
+    }
+
+    public Attribute(String key, String value, String attributeId, String type) {
+
+        this.key = key;
+        this.value = value;
         this.value = value;
         this.attributeId = attributeId;
     }
@@ -77,5 +86,13 @@ public class Attribute {
     public void setValue(String value) {
 
         this.value = value;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
