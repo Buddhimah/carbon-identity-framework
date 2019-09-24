@@ -174,6 +174,8 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
                 } catch (CryptoException e) {
                     throw handleServerException(ERROR_CODE_ENCRYPTION_FAILED, resourceTypeName);
                 }
+            } else {
+                attribute.setDataType(ConfigurationConstants.AttributeTypes.TEXT.getType());
             }
         }
         this.getConfigurationDAO().addResource(resource);
