@@ -36,7 +36,7 @@
   "oauth.token_validation.app_access_token_validity": "1h",
   "oauth.token_validation.user_access_token_validity": "1h",
   "oauth.token_validation.refresh_token_validity": "1d",
-  "oauth.timestamp_skew": "$ref{server.clock_skew}",
+  "oauth.timestamp_skew": "0m",
   "oauth.token_renewal.renew_refresh_token": true,
   "oauth.token_renewal.renew_access_token_per_request": false,
   "oauth.hash_tokens_and_secrets": false,
@@ -108,7 +108,9 @@
   "oauth.grant_type.kerberos.grant_validator": "org.wso2.carbon.identity.oauth2.grant.kerberos.KerberosGrantValidator",
 
   "oauth.extensions.callback_handlers": [
-    "org.wso2.carbon.identity.oauth.callback.DefaultCallbackHandler"
+    {
+      "class":"org.wso2.carbon.identity.oauth.callback.DefaultCallbackHandler"
+    }
   ],
   "oauth.token_validator.bearer.enable": true,
   "oauth.token_validator.bearer.class": "org.wso2.carbon.identity.oauth2.validators.DefaultOAuth2TokenValidator",
@@ -150,6 +152,7 @@
 
   "oauth.oidc.request_object_builder.request_param_value_builder.enabled": true,
   "oauth.oidc.request_object_builder.request_param_value_builder.class": "org.wso2.carbon.identity.openidconnect.RequestParamRequestObjectBuilder",
+  "oauth.oidc.redirect_to_post_logout_uri_on_consent_denial": true,
 
   "saml.entity_id": "${carbon.host}",
   "saml.attribute_claim_dialect": "http://wso2.org/claims",

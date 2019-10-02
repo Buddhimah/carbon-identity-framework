@@ -460,6 +460,7 @@
                 Supported versions: IS 5.4.0 onwards
             -->
             <RequestObjectValidator>org.wso2.carbon.identity.openidconnect.RequestObjectValidatorImpl</RequestObjectValidator>
+            <RedirectToPostLogoutUriOnConsentDenial>true</RedirectToPostLogoutUriOnConsentDenial>
         </OpenIDConnect>
 
         <!-- Configs related to OAuth2 token persistence -->
@@ -1272,5 +1273,14 @@
         Default value is the maximum packet size for MySQL 5.7 in bytes.-->
         <MaximumQueryLengthInBytes>4194304</MaximumQueryLengthInBytes>
     </ConfigurationStore>
+
+    <FIDO>
+        <WebAuthn>
+            <Enable>true</Enable>
+        </WebAuthn>
+        <FIDO2TrustedOrigins>
+            <Origin>${carbon.protocol}://${carbon.host}:${carbon.management.port}</Origin>
+        </FIDO2TrustedOrigins>
+    </FIDO>
 
 </Server>
