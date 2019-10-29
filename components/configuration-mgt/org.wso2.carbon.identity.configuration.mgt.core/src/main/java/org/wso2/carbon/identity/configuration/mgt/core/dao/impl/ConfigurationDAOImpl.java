@@ -18,11 +18,14 @@ package org.wso2.carbon.identity.configuration.mgt.core.dao.impl;
 
 import java.io.InputStream;
 import java.sql.Blob;
+
+import com.sun.rowset.CachedRowSetImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.database.utils.jdbc.JdbcTemplate;
+import org.wso2.carbon.database.utils.jdbc.RowMapper;
 import org.wso2.carbon.database.utils.jdbc.Template;
 import org.wso2.carbon.database.utils.jdbc.exceptions.DataAccessException;
 import org.wso2.carbon.database.utils.jdbc.exceptions.TransactionException;
@@ -43,6 +46,7 @@ import org.wso2.carbon.identity.configuration.mgt.core.search.PrimitiveCondition
 import org.wso2.carbon.identity.configuration.mgt.core.search.exception.PrimitiveConditionValidationException;
 import org.wso2.carbon.identity.configuration.mgt.core.util.JdbcUtils;
 import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
+import org.wso2.carbon.identity.core.util.LambdaExceptionUtils;
 
 import static org.wso2.carbon.identity.configuration.mgt.core.constant.ConfigurationConstants.DB_SCHEMA_COLUMN_NAME_FILE_NAME;
 import static org.wso2.carbon.identity.configuration.mgt.core.constant.ConfigurationConstants.ErrorMessages.ERROR_CODE_DELETE_FILE;
@@ -63,8 +67,8 @@ import static org.wso2.carbon.identity.configuration.mgt.core.constant.SQLConsta
 import static org.wso2.carbon.identity.configuration.mgt.core.constant.SQLConstants.UPDATE_LAST_MODIFIED_SQL;
 import static org.wso2.carbon.identity.configuration.mgt.core.util.ConfigurationUtils.getFilePath;
 
-
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -75,6 +79,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.IntConsumer;
 
 import static java.time.ZoneOffset.UTC;
 import static org.wso2.carbon.identity.configuration.mgt.core.constant.ConfigurationConstants.DB_SCHEMA_COLUMN_NAME_ATTRIBUTE_ID;
@@ -1151,7 +1158,53 @@ public class ConfigurationDAOImpl implements ConfigurationDAO {
     public List<Resource> getResourcesByType(int tenantId, String resourceTypeId)
             throws ConfigurationManagementServerException {
 
+//        LambdaExceptionUtils.BiFunctionWithExceptions<ResultSet, Integer, Resource, Exception> function1 = (resultSet,
+//                rowNumber) -> {
+//            String resourceId = resultSet.getString("ID");
+//            String resourceName = resultSet.getString("NAME");
+//            String resourceLastModified = resultSet.getString("LAST_MODIFIED");
+//            String resourceCreatedTime = resultSet.getString("CREATED_TIME");
+//            String resourceHasFile = resultSet.getString("HAS_FILE");
+//            String resourceHasAttribute = resultSet.getString("HAS_ATTRIBUTE");
+//            Resource resource = new Resource();
+//            resource.setCreatedTime(resourceCreatedTime);
+//            resource.setHasAttribute(Boolean.valueOf(resourceHasAttribute));
+//            resource.setResourceId(resourceId);
+//            resource.setResourceName(resourceName);
+//            resource.setLastModified(resourceLastModified);
+//            resource.setHasFile(Boolean.valueOf(resourceHasFile));
+//            resource.setTenantDomain(IdentityTenantUtil.getTenantDomain(tenantId));
+//            resource.setFiles(getFilesByResourceType(resourceTypeId));
+//            resource.setAttributes(getAttributesByResourceId(resourceId));
+//            return resource;
+//        };
+
+        LambdaExceptionUtils.BiFunctionWithExceptions<ResultSet, Integer, Resource, Exception> function1 = (resultSet,
+                rowNumber) -> {
+            String resourceId = resultSet.getString("ID");
+            String resourceName = resultSet.getString("NAME");
+            String resourceLastModified = resultSet.getString("LAST_MODIFIED");
+            String resourceCreatedTime = resultSet.getString("CREATED_TIME");
+            String resourceHasFile = resultSet.getString("HAS_FILE");
+            String resourceHasAttribute = resultSet.getString("HAS_ATTRIBUTE");
+            Resource resource = new Resource();
+            resource.setCreatedTime(resourceCreatedTime);
+            resource.setHasAttribute(Boolean.valueOf(resourceHasAttribute));
+            resource.setResourceId(resourceId);
+            resource.setResourceName(resourceName);
+            resource.setLastModified(resourceLastModified);
+            resource.setHasFile(Boolean.valueOf(resourceHasFile));
+            resource.setTenantDomain(IdentityTenantUtil.getTenantDomain(tenantId));
+            resource.setFiles(getFilesByResourceType(resourceTypeId));
+            resource.setAttributes(getAttributesByResourceId(resourceId));
+            return resource;
+        };
+
+        BiFunction<ResultSet, Integer, Resource> resultSetIntegerResourceBiFunction = LambdaExceptionUtils
+                .rethrowBiFunction(function1);
+
         JdbcTemplate jdbcTemplate = JdbcUtils.getNewTemplate();
+
         try {
             return jdbcTemplate.executeQuery(GET_RESOURCES_BY_RESOURCE_TYPE_ID_SQL,
                     ((resultSet, rowNumber) -> {

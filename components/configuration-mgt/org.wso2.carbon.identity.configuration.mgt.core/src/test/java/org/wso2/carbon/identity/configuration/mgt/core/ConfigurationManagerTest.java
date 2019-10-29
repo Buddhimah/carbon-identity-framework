@@ -16,6 +16,7 @@
 
 package org.wso2.carbon.identity.configuration.mgt.core;
 
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.testng.PowerMockTestCase;
 import org.junit.Assert;
@@ -161,6 +162,16 @@ public class ConfigurationManagerTest extends PowerMockTestCase {
 
         assertEquals("Existing id should be equal to the replaced id", resourceTypeCreated.getId(),
                 resourceTypeReplaced.getId());
+    }
+
+    @Test(priority = 4)
+    public void testReplaceGetResourcesByType() throws Exception {
+
+        testAddResourceType();
+
+        Resources ddddd = configurationManager.getResourcesByType(SAMPLE_RESOURCE_TYPE_NAME);
+        System.out.println(ddddd.getResources());
+
     }
 
     @Test(priority = 5, expectedExceptions = ConfigurationManagementClientException.class)

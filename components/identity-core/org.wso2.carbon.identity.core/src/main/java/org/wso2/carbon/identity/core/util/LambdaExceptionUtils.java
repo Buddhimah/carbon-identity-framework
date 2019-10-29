@@ -234,6 +234,19 @@ public final class LambdaExceptionUtils {
         };
     }
 
+    public static <T,U, R, E extends Exception> BiFunction<T,U, R> rethrowBiFunction(
+            BiFunctionWithExceptions<T, U, R, E> function) {
+
+        return (t,u) -> {
+            try {
+                return function.apply(t, u);
+            } catch (Exception exception) {
+                throwAsUnchecked(exception);
+                return null;
+            }
+        };
+    }
+
     @SuppressWarnings("unchecked")
     private static <E extends Throwable> void throwAsUnchecked(Exception exception) throws E {
 
