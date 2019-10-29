@@ -43,6 +43,7 @@ import org.wso2.carbon.identity.configuration.mgt.core.search.PrimitiveCondition
 import org.wso2.carbon.identity.configuration.mgt.core.search.exception.PrimitiveConditionValidationException;
 import org.wso2.carbon.identity.configuration.mgt.core.util.JdbcUtils;
 import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
+import org.wso2.carbon.identity.core.util.LambdaExceptionUtils;
 
 import static org.wso2.carbon.identity.configuration.mgt.core.constant.ConfigurationConstants.DB_SCHEMA_COLUMN_NAME_FILE_NAME;
 import static org.wso2.carbon.identity.configuration.mgt.core.constant.ConfigurationConstants.ErrorMessages.ERROR_CODE_DELETE_FILE;
@@ -63,8 +64,7 @@ import static org.wso2.carbon.identity.configuration.mgt.core.constant.SQLConsta
 import static org.wso2.carbon.identity.configuration.mgt.core.constant.SQLConstants.UPDATE_LAST_MODIFIED_SQL;
 import static org.wso2.carbon.identity.configuration.mgt.core.util.ConfigurationUtils.getFilePath;
 
-
-
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1154,7 +1154,7 @@ public class ConfigurationDAOImpl implements ConfigurationDAO {
         JdbcTemplate jdbcTemplate = JdbcUtils.getNewTemplate();
         try {
             return jdbcTemplate.executeQuery(GET_RESOURCES_BY_RESOURCE_TYPE_ID_SQL,
-                    ((resultSet, rowNumber) -> {
+                        LambdaExceptionUtils.rethrowBiFunction(((resultSet, rowNumber) -> {
                         String resourceId = resultSet.getString("ID");
                         String resourceName = resultSet.getString("NAME");
                         String resourceLastModified = resultSet.getString("LAST_MODIFIED");
@@ -1169,14 +1169,10 @@ public class ConfigurationDAOImpl implements ConfigurationDAO {
                         resource.setLastModified(resourceLastModified);
                         resource.setHasFile(Boolean.valueOf(resourceHasFile));
                         resource.setTenantDomain(IdentityTenantUtil.getTenantDomain(tenantId));
-                        try {
-                            resource.setFiles(getFilesByResourceType(resourceTypeId));
-                            resource.setAttributes(getAttributesByResourceId(resourceId));
-                        } catch (ConfigurationManagementServerException e) {
-                            throwAsUnchecked(e);
-                        }
+                        resource.setFiles(getFilesByResourceType(resourceTypeId));
+                        resource.setAttributes(getAttributesByResourceId(resourceId));
                         return resource;
-                    }),
+                    })),
                     preparedStatement -> {
                         preparedStatement.setString(1, resourceTypeId);
                         preparedStatement.setString(2, Integer.toString(tenantId));

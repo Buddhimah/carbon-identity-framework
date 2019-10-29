@@ -192,6 +192,28 @@ public final class LambdaExceptionUtils {
     }
 
     /**
+     * This method allows a Function which throws exceptions to be used in places which expects a Function.
+     *
+     * @param <T>      Any Object.
+     * @param <R>      Any Object
+     * @param <E>      Any Exception.
+     * @param function Function to apply for given arguments.
+     * @return Any Object that result from the function passed.
+     */
+    public static <T,U, R, E extends Exception> BiFunction<T,U, R> rethrowBiFunction(
+            BiFunctionWithExceptions<T, U, R, E> function) {
+
+        return (t,u) -> {
+            try {
+                return function.apply(t, u);
+            } catch (Exception exception) {
+                throwAsUnchecked(exception);
+                return null;
+            }
+        };
+    }
+
+    /**
      * This method allows a BiFunction which throws exceptions to be used in places which expects a BiFunction.
      *
      * @param <T>      Any Object.
