@@ -498,7 +498,7 @@ public class SessionDataStore {
         }
         Connection connection = null;
         try {
-            connection = IdentityDatabaseUtil.getDBConnection();
+            connection = IdentityDatabaseUtil.getCustomDBConnection();
         } catch (IdentityRuntimeException e) {
             log.error(e.getMessage(), e);
             return;

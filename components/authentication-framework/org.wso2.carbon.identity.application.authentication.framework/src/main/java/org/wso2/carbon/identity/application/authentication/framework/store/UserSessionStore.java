@@ -30,6 +30,7 @@ import org.wso2.carbon.identity.application.authentication.framework.util.Framew
 import org.wso2.carbon.identity.application.authentication.framework.util.JdbcUtils;
 import org.wso2.carbon.identity.application.authentication.framework.util.SessionMgtConstants;
 import org.wso2.carbon.identity.application.common.model.User;
+import org.wso2.carbon.identity.core.persistence.CustomJDBCPersistenceManager;
 import org.wso2.carbon.identity.core.util.IdentityDatabaseUtil;
 import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
@@ -330,7 +331,7 @@ public class UserSessionStore {
      */
     public void storeUserSessionData(String userId, String sessionId) throws UserSessionException {
 
-        try (Connection connection = IdentityDatabaseUtil.getDBConnection()) {
+        try (Connection connection = IdentityDatabaseUtil.getCustomDBConnection()) {
             try(PreparedStatement preparedStatement = connection
                      .prepareStatement(SQLQueries.SQL_INSERT_USER_SESSION_STORE_OPERATION)) {
                 preparedStatement.setString(1, userId);
@@ -362,7 +363,7 @@ public class UserSessionStore {
     public boolean isExistingMapping(String userId, String sessionId) throws UserSessionException {
 
         Boolean isExisting = false;
-        try (Connection connection = IdentityDatabaseUtil.getDBConnection(false)) {
+        try (Connection connection = IdentityDatabaseUtil.getCustomDBConnection(false)) {
             try (PreparedStatement preparedStatement = connection
                      .prepareStatement(SQLQueries.SQL_SELECT_USER_SESSION_MAP)) {
                 preparedStatement.setString(1, userId);
@@ -463,7 +464,7 @@ public class UserSessionStore {
             log.debug("Removing meta information of the deleted sessions.");
         }
 
-        try (Connection connection = IdentityDatabaseUtil.getDBConnection(true)) {
+        try (Connection connection = IdentityDatabaseUtil.getCustomDBConnection(true)) {
             try {
                 deleteSessionDataFromTable(sessionsToRemove, connection, IDN_AUTH_USER_SESSION_MAPPING_TABLE,
                         SQLQueries.SQL_DELETE_TERMINATED_SESSION_DATA);
@@ -708,6 +709,7 @@ public class UserSessionStore {
     public void storeSessionMetaData(String sessionId, Map<String, String> metaData) throws UserSessionException {
 
         JdbcTemplate jdbcTemplate = JdbcUtils.getNewTemplate();
+        jdbcTemplate = new JdbcTemplate(CustomJDBCPersistenceManager.getInstance().getDataSource());
         try {
             jdbcTemplate.executeBatchInsert(SQLQueries.SQL_INSERT_SESSION_META_DATA, (preparedStatement -> {
                 for (Map.Entry<String, String> entry : metaData.entrySet()) {

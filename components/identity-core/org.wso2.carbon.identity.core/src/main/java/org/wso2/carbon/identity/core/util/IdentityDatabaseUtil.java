@@ -21,6 +21,7 @@ package org.wso2.carbon.identity.core.util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.identity.base.IdentityRuntimeException;
+import org.wso2.carbon.identity.core.persistence.CustomJDBCPersistenceManager;
 import org.wso2.carbon.identity.core.persistence.JDBCPersistenceManager;
 import org.wso2.carbon.identity.core.persistence.UmPersistenceManager;
 
@@ -52,6 +53,23 @@ public class IdentityDatabaseUtil {
     public static Connection getDBConnection(boolean shouldApplyTransaction) throws IdentityRuntimeException {
 
         return JDBCPersistenceManager.getInstance().getDBConnection(shouldApplyTransaction);
+    }
+
+    @Deprecated
+    public static Connection getCustomDBConnection() throws IdentityRuntimeException {
+
+        return getCustomDBConnection(true);
+    }
+
+    /**
+     * Get a database connection instance from the Identity Persistence Manager
+     *
+     * @return Database Connection
+     * @throws IdentityRuntimeException Error when getting a database connection to Identity database
+     */
+    public static Connection getCustomDBConnection(boolean shouldApplyTransaction) throws IdentityRuntimeException {
+
+        return CustomJDBCPersistenceManager.getInstance().getDBConnection(shouldApplyTransaction);
     }
 
     /**
