@@ -239,6 +239,16 @@ public class JDBCPersistenceManager {
     }
 
     /**
+     * Returns Session data source.
+     *
+     * @return Data source.
+     */
+    public DataSource getSessionDataSource() {
+
+        return sessionDataSource;
+    }
+
+    /**
      * Revoke the transaction when catch then sql transaction errors.
      *
      * @param dbConnection database connection.

@@ -75,6 +75,16 @@ public class IdentityDatabaseUtil {
         return JDBCPersistenceManager.getInstance().getDataSource();
     }
 
+    /**
+     * Get session database source instance from the Identity Persistence Manager.
+     *
+     * @return Database Source
+     */
+    public static DataSource getSessionDataSource() {
+
+        return JDBCPersistenceManager.getInstance().getSessionDataSource();
+    }
+
     public static void closeAllConnections(Connection dbConnection, ResultSet rs, PreparedStatement prepStmt) {
 
         closeResultSet(rs);

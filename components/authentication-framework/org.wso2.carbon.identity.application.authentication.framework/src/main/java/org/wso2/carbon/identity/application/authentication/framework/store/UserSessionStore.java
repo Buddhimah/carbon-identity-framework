@@ -152,7 +152,7 @@ public class UserSessionStore {
             throws UserSessionException {
 
         String userId = null;
-        try (Connection connection = IdentityDatabaseUtil.getDBConnection(false)) {
+        try (Connection connection = IdentityDatabaseUtil.getSessionDBConnection(false)) {
             try (PreparedStatement preparedStatement = connection
                             .prepareStatement(SQLQueries.SQL_SELECT_USER_ID)) {
                 preparedStatement.setString(1, userName);
